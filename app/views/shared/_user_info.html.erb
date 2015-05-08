@@ -1,0 +1,7 @@
+<%= image_tag current_user.avatar.url if current_user.avatar? %>
+<br><br>
+<h1><%= current_user.email %></h1>
+<span><%= pluralize(current_user.posts.count, "post") %></span>
+<br>
+<span><%= link_to "view my public profile", current_user %></span>
+<span><%= link_to "edit my account", edit_user_registration_path %></span>

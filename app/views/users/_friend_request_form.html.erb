@@ -1,0 +1,39 @@
+<% unless current_user?(@user) %>
+  <div id="friend_request_form">
+    <% if current_user.friending?(@user) %>
+      <div class = "alert alert-success">
+        <b>You are friends with this user.</b>
+      </div>
+      <br>
+      <%= render 'unfriend' %>
+    <% else %>
+      <% if current_user.requesters?(@user) %>
+        <div class = "alert alert-success">
+        <b>This user wants to be your friend. Do you wish to accept this request?</b>
+        </div>
+        <%= form_for(current_user.active_friendships.build) do |f| %>
+          <div><%= hidden_field_tag :friended_id, @user.id %></div>
+          <%= f.fields_for (current_user.active_friendships.build) do |g| %>
+            <div><%= hidden_field_tag :friender_id, @user.id %></div>
+          <% end %>
+          <%= f.fields_for(@user.active_friend_requests.find_by(requested_id: current_user.id),
+             html: { method: :delete }) do |h| %>
+          <% end %>
+          <%= f.submit "Yes", class: "btn btn-primary" %>
+        <% end %>
+        <%= form_for(@user.active_friend_requests.find_by(requested_id: current_user.id),
+             html: { method: :delete }) do |f| %>
+          <%= f.submit "No", class: "btn" %>
+        <% end %>
+      <% else %>
+        <% if current_user.requesting?(@user) %>
+          <div class = "alert alert-success">
+            <b>You have a pending friend request with this user.</b>
+          </div>
+        <% else %>
+          <%= render 'friend_request' %>
+        <% end %>
+      <% end %>
+    <% end %>
+  </div>
+<% end %>

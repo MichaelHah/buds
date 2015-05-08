@@ -1,0 +1,33 @@
+<li id="photo-<%= photo.id %>">
+  <div class="avatar"><%= image_tag photo.user.avatar.thumb.url if photo.user.avatar? %></div>
+  <strong>
+  <span class="user">
+  <%= link_to photo.user.email, photo.user %> uploaded an image:</span>
+  <span class="content">
+  <%= photo.title.slice(0..30) %><% if photo.title.length > 30 %>...<% end %>
+   (<%= photo.image.url %>)</span>
+  </strong>
+  <span><%= link_to "view file and comments", photo_path(photo) %> |
+  <class="timestamp">
+    Uploaded <%= time_ago_in_words(photo.created_at) %> ago
+    <% if current_user?(photo.user) %>
+       | <%= link_to "delete", photo, method: :delete,
+                                       data: { confirm: "You sure?" } %>
+    <% end %>
+  </span>
+  <br><br><br>
+  <div><%= image_tag photo.image.preview.url if photo.image? %></div>
+  <br>
+      <% unless current_user?(photo.user) %>
+        <div id="like_form">
+        <% unless current_user.liking?(photo) %>
+          <%= form_for(@like) do |f| %>
+            <div><%= hidden_field_tag :user_id, current_user.id %></div>
+            <div><%= hidden_field_tag :likeable_id, photo.id %></div>
+            <div><%= hidden_field_tag :likeable_type, photo.class.to_s %></div>
+            <%= f.submit "like this photo", class: "btn btn-primary btn-xs" %>
+          <% end %>
+        <% end %>
+        </div>
+      <% end %>
+</li>

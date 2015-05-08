@@ -1,0 +1,25 @@
+<% @user ||= current_user %>
+<div class="stats">
+  <a href="<%= friending_user_path(@user) %>">
+    <strong id="friending" class="stat">
+      <%= @user.friending.count %>
+    </strong>
+    friends
+  </a>
+
+  <%if current_user == @user %>
+    <a href="<%= requesting_user_path(@user) %>">
+      <strong id="requesting" class="stat">
+        <%= @user.requesting.count %>
+      </strong>
+      pending
+    </a>
+
+    <a href="<%= requesters_user_path(@user) %>">
+      <strong id="requesters" class="stat">
+        <%= @user.requesters.count %>
+      </strong>
+      requests
+    </a>
+  <% end %>
+</div>

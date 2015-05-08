@@ -1,0 +1,27 @@
+<% provide(:title, @title) %>
+<div class="row">
+  <aside class="col-md-4">
+    <section class="user_info">
+      <h1>
+      <%= image_tag @user.avatar.url if @user.avatar? %>
+      <br><br>
+      <%= @user.email %>
+      </h1>
+      <span><%= pluralize(@user.posts.count, "post") %></span>
+      <br>
+      <span><%= link_to "view my public profile", @user %></span>
+    </section>
+    <section class="stats">
+      <%= render 'shared/stats' %>
+    </section>
+  </aside>
+  <div class="col-md-8">
+    <h3><%= @title %></h3>
+    <% if @users.any? %>
+      <ul class="users friend">
+        <%= render @users %>
+      </ul>
+      <%= will_paginate %>
+    <% end %>
+  </div>
+</div>

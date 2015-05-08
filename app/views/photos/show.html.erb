@@ -1,0 +1,34 @@
+<div class="row">
+  <div class="col-md-8">
+    <div class="posts">
+      <div class="avatar"><%= image_tag @photo.user.avatar.thumb.url if @photo.user.avatar? %></div>
+      <h4><%= link_to @photo.user.email, @photo.user %> uploaded this photo <%= time_ago_in_words(@photo.created_at) %> ago:</h4>
+      <h4><%= @photo.title if @photo.title? %> (<%= @photo.image.url %>)</h4>
+      <br>
+      <div><%= image_tag @photo.image.url if @photo.image? %></div>
+      <br>
+      <% unless current_user?(@photo.user) %>
+        <div id="like_form">
+        <% unless current_user.liking?(@photo) %>
+          <%= form_for(@like) do |f| %>
+            <div><%= hidden_field_tag :user_id, current_user.id %></div>
+            <div><%= hidden_field_tag :likeable_id, @photo.id %></div>
+            <div><%= hidden_field_tag :likeable_type, @photo.class.to_s %></div>
+            <%= f.submit "like this photo", class: "btn btn-primary btn-xs" %>
+          <% end %>
+        <% end %>
+        </div>
+      <% end %>
+      <br>
+      <% if @photo.comments.any? %>
+        <h4>comments (<%= @photo.comments.count %>)</h4>
+        <ol class="posts">
+          <%= render @comments %>
+        </ol>
+        <%= will_paginate @comments %>
+      <% end %>
+      <br>
+      <%= render partial: 'comments/form', :locals => {:local_entity => @photo} %>
+    </div>
+  </div>
+</div>

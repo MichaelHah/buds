@@ -1,0 +1,34 @@
+<% provide(:title, @user.email) %>
+<div class="row">
+  <aside class="col-md-4">
+    <section class="user_info">
+      <h1>
+      <%= image_tag @user.avatar.url if @user.avatar? %>
+      <br><br>
+      <%= @user.email %>
+      </h1>
+      <span><%= pluralize(@user.posts.count, "post") %></span>
+    </section>
+    <section class="stats">
+      <%= render 'shared/stats' %>
+    </section>
+  </aside>
+  <div class="col-md-8">
+    <%= render 'friend_request_form' %>
+    <% if @user.posts.any? %>
+      <h3>posts (<%= @user.posts.count %>)</h3>
+      <ol class="posts">
+        <%= render @posts %>
+      </ol>
+      <%= will_paginate @posts %>
+    <% end %>
+
+    <% if @user.photos.any? %>
+      <h3>photos (<%= @user.photos.count %>)</h3>
+      <ol class="posts">
+        <%= render @photos %>
+      </ol>
+      <%= will_paginate @photos %>
+    <% end %>
+  </div>
+</div>

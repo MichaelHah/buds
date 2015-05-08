@@ -1,0 +1,24 @@
+<li id="comment-<%= comment.id %>">
+	<div class="avatar"><%= image_tag comment.user.avatar.thumb.url if comment.user.avatar? %></div>
+	<strong><span class="user">
+	<%= link_to comment.user.email, comment.user %> said: (<%= comment.likes.count %> liked this)</span>
+	</strong>
+	<span class="content">
+	<%= comment.content %>
+	</span>
+	<span class="timestamp">
+	  Posted <%= time_ago_in_words(comment.created_at) %> ago.
+	</span>
+	<% unless current_user?(comment.user) %>
+	  <div id="like_form">
+		<% unless current_user.liking?(comment) %>
+		  <%= form_for(@like) do |f| %>
+		  	<div><%= hidden_field_tag :user_id, current_user.id %></div>
+        <div><%= hidden_field_tag :likeable_id, comment.id %></div>
+        <div><%= hidden_field_tag :likeable_type, comment.class.to_s %></div>
+        <%= f.submit "like this comment", class: "btn btn-primary btn-xs" %>
+      <% end %>
+		<% end %>
+		</div>
+	<% end %>
+</li>

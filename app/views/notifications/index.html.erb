@@ -1,0 +1,13 @@
+<% provide(:title, 'Notifications') %>
+<h1>Notifications</h1>
+
+<% if @notifications.any? %>
+  <ol class="posts">
+	<b>
+	<% current_user.notifications.each do |n| %>
+	  <li><%= n.content %><br>- <%= time_ago_in_words(n.created_at) %> ago</li>
+	<% end %>
+	</b>
+  </ol>
+  <%= will_paginate @notifications %>
+<% end %>

@@ -1,0 +1,12 @@
+<h4>have something to say?</h4>
+<br>
+    <%= form_for(@comment) do |f| %>
+    	<%= render 'shared/error_messages', object: f.object %>
+			<div><%= hidden_field_tag :user_id, current_user.id %></div>
+			<div><%= hidden_field_tag :commentable_id, local_entity.id %></div>
+      <div><%= hidden_field_tag :commentable_type, local_entity.class.to_s %></div>
+	  	<div class="field">
+	  	  <%= f.text_area :content, placeholder: "Your comment goes here..." %>
+	  	</div>
+    	<%= f.submit 'Post', class: "btn btn-primary" %>
+  	<% end %>
